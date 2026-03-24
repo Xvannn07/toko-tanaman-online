@@ -30,7 +30,7 @@ Website penjualan tanaman online berbasis **Next.js** dengan integrasi **AI Assi
 
 ## 📸 Preview Tampilan
 
-![Preview Website Tanama Iyas](/preview.png)
+![Preview Website Tanama Iyas](https://raw.githubusercontent.com/Xvannn07/toko-tanaman-online/refs/heads/main/public/preview.png)
 
 ---
 
