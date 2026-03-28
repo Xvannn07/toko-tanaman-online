@@ -66,17 +66,18 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { messages } = await request.json();
+    const requestBody = await request.json();
+    const { messages, model = 'llama-3.1-8b-instant', temperature = 0.7, max_tokens = 500 } = requestBody;
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json(
-        { error: 'Format request tidak valid' },
+        { error: 'Format request tidak valid. Field "messages" harus berupa array.' },
         { status: 400 }
       );
     }
 
     // Get API key from server-side environment variables
-    const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
       console.error('GROQ_API_KEY tidak ditemukan di environment variables');
@@ -86,6 +87,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Build complete request body for Groq API
+    const groqRequestBody = {
+      model,
+      messages,
+      temperature,
+      max_tokens,
+    };
+
     // Forward request to Groq API
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -93,7 +102,7 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify(messages),
+      body: JSON.stringify(groqRequestBody),
     });
 
     if (!response.ok) {
