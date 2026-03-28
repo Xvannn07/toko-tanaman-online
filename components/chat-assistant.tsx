@@ -257,6 +257,48 @@ export function ChatAssistant() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Helper function to call API
+  const callChatAPI = async (userContent: string) => {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'system',
+            content: SYSTEM_PROMPT,
+          },
+          ...messages.map(msg => ({
+            role: msg.type === 'user' ? 'user' : 'assistant',
+            content: msg.content,
+          })),
+          {
+            role: 'user',
+            content: userContent,
+          },
+        ],
+        model: 'llama-3.1-8b-instant',
+        temperature: 0.7,
+        max_tokens: 500,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      
+      // Handle rate limit error
+      if (response.status === 429) {
+        throw new Error('Terlalu banyak permintaan. Silakan coba lagi dalam beberapa detik.');
+      }
+      
+      throw new Error(errorData.error || 'Gagal menghubungi AI service');
+    }
+
+    return await response.json();
+  };
+
   const handleSendMessage = async () => {
     if (!input.trim()) return;
 
@@ -271,46 +313,7 @@ export function ChatAssistant() {
     setIsLoading(true);
 
     try {
-      const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
-      
-      if (!apiKey) {
-        throw new Error('GROQ API Key tidak ditemukan. Silakan set NEXT_PUBLIC_GROQ_API_KEY di .env.local');
-      }
-
-      // Mengirim request ke Groq API
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [
-            {
-              role: 'system',
-              content: SYSTEM_PROMPT,
-            },
-            ...messages.map(msg => ({
-              role: msg.type === 'user' ? 'user' : 'assistant',
-              content: msg.content,
-            })),
-            {
-              role: 'user',
-              content: input,
-            },
-          ],
-          temperature: 0.7,
-          max_tokens: 500,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || 'Gagal menghubungi Groq API');
-      }
-
-      const data = await response.json();
+      const data = await callChatAPI(input);
       let assistantContent = data.choices[0]?.message?.content || 'Maaf, saya tidak bisa memproses pertanyaan Anda saat ini.';
 
       // Check if this is an owner contact request and add WhatsApp link
@@ -367,45 +370,7 @@ export function ChatAssistant() {
     setIsLoading(true);
 
     try {
-      const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
-      
-      if (!apiKey) {
-        throw new Error('GROQ API Key tidak ditemukan. Silakan set NEXT_PUBLIC_GROQ_API_KEY di .env.local');
-      }
-
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          messages: [
-            {
-              role: 'system',
-              content: SYSTEM_PROMPT,
-            },
-            ...messages.map(msg => ({
-              role: msg.type === 'user' ? 'user' : 'assistant',
-              content: msg.content,
-            })),
-            {
-              role: 'user',
-              content: reply,
-            },
-          ],
-          temperature: 0.7,
-          max_tokens: 500,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || 'Gagal menghubungi Groq API');
-      }
-
-      const data = await response.json();
+      const data = await callChatAPI(reply);
       let assistantContent = data.choices[0]?.message?.content || 'Maaf, saya tidak bisa memproses pertanyaan Anda saat ini.';
 
       // Check if this is an owner contact request and add WhatsApp link
