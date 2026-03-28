@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get API key from server-side environment variables
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
     if (!apiKey) {
       console.error('GROQ_API_KEY tidak ditemukan di environment variables');
