@@ -46,7 +46,7 @@ export default function TentangPage() {
                 Beranda
               </a>
               <span>/</span>
-              <span className="text-foreground">Tentang Kami</span>
+              <span className="text-foreground">Info Tentang Kami</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground">Tentang Tanaman Iyas</h1>
             <p className="text-lg text-foreground/70 mt-4">
@@ -69,7 +69,7 @@ export default function TentangPage() {
                     Dengan dedikasi penuh, kami memilih dan merawat setiap tanaman dengan cermat untuk memastikan kualitas terbaik sampai ke tangan pelanggan kami. Setiap tanaman yang kami tawarkan telah melalui proses seleksi ketat.
                   </p>
                   <p>
-                    Kini, Tanaman Iyas telah menjadi pilihan utama masyarakat Singaraja dan sekitarnya untuk kebutuhan tanaman hias dan landscape mereka.
+                    Naman Iyas Di ambil dari nama istri, dengan mengambarkan perjuangan seorang petani yang berjuang untuk menghidupkan tanaman.
                   </p>
                 </div>
               </div>
