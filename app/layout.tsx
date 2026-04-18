@@ -16,12 +16,12 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tanamaniyas.com'), // Ganti ke domain asli Tanaman Iyas
+  metadataBase: new URL('https://tanamaniyas.xyz'), // Ganti ke domain asli Tanaman Iyas
   title: {
-    default: 'Tanaman Iyas | Tanaman Hias Berkualitas di Singaraja',
+    default: 'Tanaman Iyas | Jual Tanaman Hias Singaraja, Bali - Nursery Lengkap',
     template: '%s | Tanaman Iyas'
   },
-  description: 'Tanaman Iyas menyediakan tanaman hias indoor & outdoor, tanaman taman, dan konsultasi perawatan tanaman di Singaraja, Bali. Kunjungi nursery kami untuk lihat koleksi lengkap.',
+  description: 'Cari toko tanaman hias di Singaraja? Tanaman Iyas jual monstera, aglonema, kaktus & tanaman taman. Konsultasi gratis. Lokasi Jl. pulau obi, buka setiap hari. Cek stok!',
   keywords: ['tanaman hias Singaraja', 'toko tanaman Singaraja', 'nursery tanaman Bali', 'tanaman indoor', 'tanaman outdoor', 'konsultasi tanaman', 'jual tanaman Singaraja', 'Bali'],
   authors: [{ name: 'Tanaman Iyas' }],
   creator: 'Tanaman Iyas',
